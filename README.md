@@ -11,8 +11,6 @@
 │   ├── .env (file containing the variables to connect to PostgreSQL)
 │   └── database_program.py (the application written as a python file)
 ├── instruction_images (folder containing the images used in the README.md)/
-│   ├── image-1.png
-│   ├── image-2.png
 │   └── image.png
 ├── setup (folder containing the files needed to be executed before the application can run)/
 │   ├── ddl.sql (SQL file containing the table definitions for the application)
@@ -34,8 +32,6 @@
    ![alt text](./instruction_images/image.png)
 3. Run the SQL code in the ddl.sql file by right clicking on **StudentDatabaseSystem** then clicking on **Query Tool**. \
    Afterwards, copy and paste the code from the ddl.sql file into the code field and click on the **Play** button to execute the code.
-   ![alt text](./instruction_images/image-1.png)
-   ![alt text](./instruction_images/image-2.png)
 4. Next, run the SQL code in the dml.sql file
    by copy and pasting the code in the dml.sql file into the code field and click on the **Play** button to execute the code.
 5. Before actually starting the application, we will have to modify the .env file in the code directory to fit your postgres credentials:
