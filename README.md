@@ -3,6 +3,10 @@
 - Name: Nguyen-Hanh Nong
 - Student Number: 101220611
 
+## Link To Youtube Video:
+
+https://youtu.be/oueAbgw4qXs
+
 ## File Structure:
 
 ```

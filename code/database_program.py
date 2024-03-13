@@ -56,6 +56,7 @@ def getAllStudents():
 
 # Function that adds a new student to the database using the first_name, last_name, email and enrollment_date properties.
 def addStudent(first_name, last_name, email, enrollment_date):
+  # Use insert statement to add a new row to the students table
   sql_statement = f'''INSERT INTO students (first_name, last_name, email, enrollment_date) VALUES ('{first_name}', '{last_name}', '{email}', '{enrollment_date}');'''
   cursor.execute(sql_statement)
   conn.commit()
@@ -63,6 +64,7 @@ def addStudent(first_name, last_name, email, enrollment_date):
 
 # Function that updates a specific student's email with a new email
 def updateStudentEmail(student_id, new_email):
+  # Use the UPDATE statement to update a value already inserted in the table using the student_id passed into the function
   sql_statement = f'''UPDATE students SET email = '{new_email}' WHERE student_id = {student_id}'''
   cursor.execute(sql_statement)
   conn.commit()
@@ -70,6 +72,7 @@ def updateStudentEmail(student_id, new_email):
 
 # Function to delete a student using a specific student id
 def deleteStudent(student_id):
+  # Use the DELETE statement to delete a row in the students table
   sql_statement = f'''DELETE FROM students WHERE student_id = {student_id};'''
   cursor.execute(sql_statement)
   conn.commit()
