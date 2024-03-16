@@ -1,7 +1,6 @@
 # COMP 3005 - Assignment 2 - Question 1
 
 - Name: Nguyen-Hanh Nong
-- Student Number: 101220611
 
 ## Link To Youtube Video:
 
