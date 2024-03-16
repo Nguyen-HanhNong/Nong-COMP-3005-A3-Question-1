@@ -49,7 +49,7 @@ def getAllStudents():
   for student in students:
     for property in student:
       if type(property) is datetime.date:
-        property = property.strftime("%Y/%m/%d")
+        property = property.strftime("%Y-%m-%d")
       print(f"{property} ", end='')
     print(f"\n")
   print(f"\n \n")
@@ -102,21 +102,45 @@ while True:
     last_name = input("What is the new student's last name? ")
     email = input("What is the new student's email? ")
     enrollment_date = input("What is the new student's enrollment_date (YYYY-MM-DD)? ")
-    addStudent(first_name, last_name, email, enrollment_date)
-    continue
-  
+
+    # Check if the fields are non-empty and the date is in the right format, if it isn't, then the addStudent function will not execute.
+    if not first_name or not last_name or not email or not enrollment_date:
+      print("ERROR: One of your fields is empty, so the query will not go through.")
+    else:
+      try: 
+        proper_format = datetime.datetime.strptime(enrollment_date, "%Y-%m-%d")
+      except ValueError:
+        print("ERROR: The date field is not in the right format. It needs to be in YYYY-MM-DD. The query will not go through.")
+      else:
+        addStudent(first_name, last_name, email, enrollment_date)
+        continue
+    
   # Getting the user input for the student_id and the new_email and then calling the updateStudentEmail function to update the specific student's email.
   if user_input == "3":
     student_id = input("What is the student_id of the student you want to update the email of? ")
     new_email = input("What is the new email? ")
-    updateStudentEmail(int(student_id), new_email)
-    continue
+
+    # Check if the fields are non-empty and the student_id is a valid number, if it isn't, then the updateStudentEmail function is not called. 
+    if not student_id or not new_email:
+      print("ERROR: One of your fields is empty, so the query will not go through.")
+    elif student_id.isnumeric() is False:
+      print("ERROR: The student_id you inputted is not a number, so the query will not go through.")
+    else:
+      updateStudentEmail(int(student_id), new_email)
+      continue
 
   # Getting the user input for the student_id and then calling the deleteStudent function to delete the specific student from the database
   if user_input == "4":
     student_id = input("What is the student_id of the student you want to delete? ")
-    deleteStudent(int(student_id))
-    continue
+
+    # Check if the student_id is nonempty and the student_id is a valid number, if it isn't, then the deleteStudent function is not called. 
+    if not student_id:
+      print("ERROR: The student_id input is empty, so the query will not go through.")
+    elif student_id.isnumeric() is False:
+      print("ERROR: The student_id you inputted is not a number, so the query will not go through.")
+    else:
+      deleteStudent(int(student_id))
+      continue
 
   # Closing the connection to the database and then exiting the while loop, thus exiting the program.
   if user_input == "5":
