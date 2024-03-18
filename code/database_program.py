@@ -48,8 +48,12 @@ def getAllStudents():
   # Extracting all the data from the tuples and formatting it to look nice in output
   for student in students:
     for property in student:
+      # Handles formatting of DATE objects from PostgreSQL
       if type(property) is datetime.date:
         property = property.strftime("%Y-%m-%d")
+      # Handles null date values in the database
+      if property is None:
+        property = "NULL"
       print(f"{property} ", end='')
     print(f"\n")
   print(f"\n \n")
@@ -57,8 +61,8 @@ def getAllStudents():
 # Function that adds a new student to the database using the first_name, last_name, email and enrollment_date properties.
 def addStudent(first_name, last_name, email, enrollment_date):
   # Use insert statement to add a new row to the students table
-  sql_statement = f'''INSERT INTO students (first_name, last_name, email, enrollment_date) VALUES ('{first_name}', '{last_name}', '{email}', '{enrollment_date}');'''
-  cursor.execute(sql_statement)
+  sql_statement = '''INSERT INTO students (first_name, last_name, email, enrollment_date) VALUES (%s, %s, %s, %s);'''
+  cursor.execute(sql_statement, (first_name, last_name, email, enrollment_date))
   conn.commit()
   print("The addStudent function has executed successfully.") 
 
@@ -104,16 +108,22 @@ while True:
     enrollment_date = input("What is the new student's enrollment_date (YYYY-MM-DD)? ")
 
     # Check if the fields are non-empty and the date is in the right format, if it isn't, then the addStudent function will not execute.
-    if not first_name or not last_name or not email or not enrollment_date:
+    if not first_name or not last_name or not email:
       print("ERROR: One of your fields is empty, so the query will not go through.")
     else:
-      try: 
-        proper_format = datetime.datetime.strptime(enrollment_date, "%Y-%m-%d")
-      except ValueError:
-        print("ERROR: The date field is not in the right format. It needs to be in YYYY-MM-DD. The query will not go through.")
-      else:
-        addStudent(first_name, last_name, email, enrollment_date)
+      # If the enrollment_date was empty the user, we want to insert NULL into the database
+      if not enrollment_date:
+        addStudent(first_name, last_name, email, None)
         continue
+      else:
+        # Check if the enrollment_date was formatted correctly, if it's not, then print an error message and do not insert a new user
+        try: 
+          proper_format = datetime.datetime.strptime(enrollment_date, "%Y-%m-%d")
+        except ValueError:
+          print("ERROR: The date field is not in the right format. It needs to be in YYYY-MM-DD. The query will not go through.")
+        else:
+          addStudent(first_name, last_name, email, enrollment_date)
+          continue
     
   # Getting the user input for the student_id and the new_email and then calling the updateStudentEmail function to update the specific student's email.
   if user_input == "3":
